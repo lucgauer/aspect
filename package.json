@@ -1,0 +1,17 @@
+{
+  "name": "ASPECT",
+  "version": "0.0.1",
+  "author": "Lucas Gauer",
+  "description": "Automated acceptance test by specification processing",
+  "engines": {
+    "node": ">=8.0.0 <11.0.0",
+    "npm": ">=5"
+  },
+  "engineStrict": true,
+  "scripts": {
+    "test": "gauge run specs/"
+  },
+  "dependencies": {
+    "taiko": "^0.5.0"
+  }
+}
