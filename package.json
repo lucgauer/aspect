@@ -1,5 +1,5 @@
 {
-  "name": "ASPECT",
+  "name": "aspect",
   "version": "0.0.1",
   "author": "Lucas Gauer",
   "description": "Automated acceptance test by specification processing",
@@ -9,9 +9,13 @@
   },
   "engineStrict": true,
   "scripts": {
-    "test": "gauge run specs/"
+    "build": "node src/",
+    "start": "gauge run specs/",
+    "test": "jest src"
   },
   "dependencies": {
+    "bayes": "0.0.7",
+    "jest": "^24.7.1",
     "taiko": "^0.5.0"
   }
 }
