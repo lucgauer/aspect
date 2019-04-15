@@ -14,8 +14,22 @@ describe('Generation test cases steps based on Gauge specs', () => {
   });
 
   it('Create a functional test script based on a step', () => {
-    expect(generateScript('Click on button')).toBe('await click()');
-    expect(generateScript('Click on "Routes"')).toBe('await click("Routes")');
-    expect(generateScript('Goto "www.google.com" page')).toBe('await goto("www.google.com")');
+    expect(generateScript('Click on button')).toBe(
+`step("Click on button", async () => {
+  await click();
+});`
+    );
+
+    expect(generateScript('Click on "Routes"')).toBe(
+`step("Click on <x1>", async (x1) => {
+  await click(x1);
+});`
+    );
+
+    expect(generateScript('Goto "www.google.com" page')).toBe(
+`step("Goto <x1> page", async (x1) => {
+  await goto(x1);
+});`
+    );
   });
 });

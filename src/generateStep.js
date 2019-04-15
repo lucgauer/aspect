@@ -14,15 +14,24 @@ module.exports.getSteps = (specFileContent) => {
 };
 
 module.exports.generateScript = (spec) => {
-  const args = (spec.match(/".+?"/g) || []).join(', ');
+  const argsValues = spec.match(/".+?"/g) || [];
+  const argsKeys = argsValues.map((value, i) => `x${i + 1}`).join(',');
   const command = nlp('it '.concat(spec.charAt(0).toLocaleLowerCase(), spec.slice(1)))
     .verbs(0)
     .out('text')
     .trim()
   ;
   const isAsync = taiko[command].constructor.name === 'AsyncFunction';
+  const stepPattern = argsValues.reduce(
+    (acc, argValue, index) => acc.replace(argValue, `<x${index + 1}>`),
+    spec,
+  );
 
-  return (isAsync ? 'await ' : '').concat(command, '(', args, ')');
+  return (
+`step("${stepPattern}", async (${argsKeys}) => {
+  ${isAsync ? 'await ' : ''}${command}(${argsKeys});
+});`
+  );
 };
 
 // module.exports.bayes = () => {
