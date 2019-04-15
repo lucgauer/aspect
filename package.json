@@ -11,11 +11,13 @@
   "scripts": {
     "build": "node src/",
     "start": "gauge run specs/",
-    "test": "jest src"
+    "test": "jest src --watch"
   },
   "dependencies": {
+    "@getgauge/cli": "1.0.4",
     "bayes": "0.0.7",
+    "compromise": "^11.13.2",
     "jest": "^24.7.1",
-    "taiko": "^0.5.0"
+    "taiko": "0.5.0"
   }
 }
