@@ -34,6 +34,22 @@ module.exports.generateScript = (spec) => {
   );
 };
 
+module.exports.handleTaikoCommands = ({ term, type, last }) => {
+  let command;
+
+  switch (type) {
+    case preposition: {
+
+    }
+  }
+
+  switch (term) {
+    default:
+
+    // TODO Handle commands looking for synonyms
+  }
+};
+
 // module.exports.bayes = () => {
 //   var classifier = bayes()
 //

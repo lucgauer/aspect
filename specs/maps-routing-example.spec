@@ -5,6 +5,6 @@ Given a user, I want to calculate a route distance between two places, so that I
 ## Calculate distance from Berlin to Munich
 
 * Goto "google maps" page
-* Search for "Berlin"
+* Write "Berlin" in "Search"
 * Click on "Routes"
 * Search for "Munich"
