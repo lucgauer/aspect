@@ -1,8 +1,12 @@
-const { getSteps, generateScript } = require('./generateStep');
+const {
+  getSteps,
+  generateCommand,
+  generateStep,
+} = require('./generateStep');
 const fs = require('fs');
 
 describe('Generation test cases steps based on Gauge specs', () => {
-  it('Read gauge specs markdown file', async () => {
+  xit('Read gauge specs markdown file', async () => {
     const specFileContent = await fs.readFileSync(
       './specs/maps-routing-example.spec',
       'utf8',
@@ -16,28 +20,39 @@ describe('Generation test cases steps based on Gauge specs', () => {
     ]);
   });
 
+  xit('Create a command based on a text snippet', () => {
+    expect(generateCommand({ type: 'verb', text: 'write' })).toEqual({
+      isAsync: true,
+      command: 'write',
+    });
+    expect(generateCommand({ type: 'preposition', text: 'in' })).toEqual({
+      isAsync: false,
+      command: 'textField',
+    });
+  });
+
   it('Create a functional test script based on a step', () => {
-    expect(generateScript('Click on button')).toBe(
-`step("Click on button", async () => {
-  await click();
-});`
-    );
-
-    expect(generateScript('Goto "www.google.com" page')).toBe(
-      `step("Goto <x1> page", async (x1) => {
-  await goto(x1);
-});`
-    );
-
-    expect(generateScript('Click on "Routes"')).toBe(
+    expect(generateStep('Click on "submit" and click "abc"')).toBe(
 `step("Click on <x1>", async (x1) => {
   await click(x1);
 });`
     );
+
+//     expect(generateStep('Goto "www.google.com" page')).toBe(
+// `step("Goto <x1> page", async (x1) => {
+//   await goto(x1);
+// });`
+//     );
+//
+//     expect(generateStep('Click on "Routes"')).toBe(
+// `step("Click on <x1>", async (x1) => {
+//   await click(x1);
+// });`
+//     );
   });
 
   xit('Create a functional test script based on a composed step', () => {
-    expect(generateScript('Write "Berlin" in "Search"')).toBe(
+    expect(generateStep('Write "Berlin" in "Search"')).toBe(
 `step("Write <x1> in <x2>", async (x1, x2) => {
   await textBox(x2);
   await write(x1);

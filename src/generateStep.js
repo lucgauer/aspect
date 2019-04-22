@@ -13,41 +13,80 @@ module.exports.getSteps = (specFileContent) => {
   ;
 };
 
-module.exports.generateScript = (spec) => {
-  const argsValues = spec.match(/".+?"/g) || [];
-  const argsKeys = argsValues.map((value, i) => `x${i + 1}`).join(',');
-  const command = nlp('it '.concat(spec.charAt(0).toLocaleLowerCase(), spec.slice(1)))
-    .verbs(0)
-    .out('text')
-    .trim()
-  ;
-  const isAsync = taiko[command].constructor.name === 'AsyncFunction';
-  const stepPattern = argsValues.reduce(
-    (acc, argValue, index) => acc.replace(argValue, `<x${index + 1}>`),
-    spec,
-  );
-
-  return (
-`step("${stepPattern}", async (${argsKeys}) => {
-  ${isAsync ? 'await ' : ''}${command}(${argsKeys});
-});`
-  );
-};
-
-module.exports.handleTaikoCommands = ({ term, type, last }) => {
+module.exports.generateCommand = ({ type, text }, nlp /* TODO relate nlp write with textbox */) => {
   let command;
 
   switch (type) {
-    case preposition: {
+    case 'verb':
+      command = text;
+      break;
 
-    }
+    case 'preposition':
+      command = 'textField';
+      break;
   }
 
-  switch (term) {
-    default:
+  return {
+    command,
+    isAsync: taiko[command].constructor.name === 'AsyncFunction',
+  };
+};
 
-    // TODO Handle commands looking for synonyms
-  }
+module.exports.generateStep = (spec) => {
+  const argValues = spec.match(/".+?"/g) || [];
+  const argsKeys = argValues.map((value, i) => `x${i + 1}`);
+  const analysis = nlp(
+    'it '.concat(
+      spec.charAt(0).toLocaleLowerCase(),
+      spec.slice(1),
+    ),
+  );
+  const analisysText = analysis.out('text');
+  const filterText = ({ text }) => text;
+  const verbs = analysis.verbs().data().map(filterText);
+  const prepositions = analysis
+    .out('tags')
+    .filter(({ tags }) => tags.includes('Preposition'))
+    .map(filterText)
+  ;
+
+  const entries = argValues.map(argValue => {
+    const type = analisysText.slice(0, analisysText.lastIndexOf(argValue));
+
+    return ({
+      text: argValue.replace(/"/g, ''),
+      type,
+    });
+  });
+
+  console.log(entries);
+
+  // console.log('verbs >', verbs);
+  // console.log('prep >', prepositions);
+
+  // const commands = argsKeys.map(argKey => {
+  //   const { command, isAsync } = module.exports.generateCommand(argKey);
+  //
+  //   return `${isAsync ? 'await ' : ''}${command}(${argsKeys})`;
+  // });
+
+  // const command = nlp('it '.concat(spec.charAt(0).toLocaleLowerCase(), spec.slice(1)))
+  //   .verbs(0)
+  //   .out('text')
+  //   .trim()
+  // ;
+  // const stepPattern = 'text <arg>';
+
+  // argsValues.reduce(
+  //   (acc, argValue, index) => acc.replace(argValue, `<x${index + 1}>`),
+  //   spec,
+  // );
+
+//   return (
+// `step("${stepPattern}", async (${argsKeys}) => {
+//   ;
+// });`
+//   );
 };
 
 // module.exports.bayes = () => {
