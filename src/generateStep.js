@@ -13,7 +13,7 @@ module.exports.getSteps = (specFileContent) => {
   ;
 };
 
-module.exports.generateCommand = ({ type, text }, nlp /* TODO relate nlp write with textbox */) => {
+module.exports.generateCommand = ({ text, type }, nlp /* TODO relate nlp write with textbox */) => {
   let command;
 
   switch (type) {
@@ -42,7 +42,7 @@ module.exports.generateStep = (spec) => {
     ),
   );
   const analisysText = analysis.out('text');
-  const filterText = ({ text }) => text;
+  const filterText = ({ text }) => text.trim();
   const verbs = analysis.verbs().data().map(filterText);
   const prepositions = analysis
     .out('tags')
@@ -50,16 +50,25 @@ module.exports.generateStep = (spec) => {
     .map(filterText)
   ;
 
-  const entries = argValues.map(argValue => {
-    const type = analisysText.slice(0, analisysText.lastIndexOf(argValue));
+  console.log(argValues);
+  console.log(verbs, prepositions);
+
+  const entries = argValues.map((argValue, index) => {
+    if (spec.match(RegExp(argValue, 'g')).length > 1) {
+      // TODO Not considered
+      throw new Error('repeated argument value');
+    }
+
+    const type = analisysText.slice(
+      index ? analisysText.indexOf(argValue) : 0,
+      analisysText.lastIndexOf(argValue)
+    );
 
     return ({
       text: argValue.replace(/"/g, ''),
       type,
     });
   });
-
-  console.log(entries);
 
   // console.log('verbs >', verbs);
   // console.log('prep >', prepositions);
