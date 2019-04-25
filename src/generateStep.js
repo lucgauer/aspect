@@ -42,13 +42,14 @@ module.exports.generateStep = (spec) => {
     ),
   );
   const analisysText = analysis.out('text');
-  const filterText = ({ text }) => text.trim();
-  const verbs = analysis.verbs().data().map(filterText);
-  const prepositions = analysis
+  const filterText = textList => textList
+    .map(({ text }) => text.trim())
+    .filter(text => !text.startsWith('"'));
+  const verbs = filterText(analysis.verbs().data());
+  const prepositions = filterText(analysis
     .out('tags')
     .filter(({ tags }) => tags.includes('Preposition'))
-    .map(filterText)
-  ;
+  );
 
   console.log(argValues);
   console.log(verbs, prepositions);
@@ -59,16 +60,24 @@ module.exports.generateStep = (spec) => {
       throw new Error('repeated argument value');
     }
 
-    const type = analisysText.slice(
-      index ? analisysText.indexOf(argValue) : 0,
-      analisysText.lastIndexOf(argValue)
-    );
+    // Text chunk, since the last argument occurrence
+    let text = spec
+      .slice(
+        index ? spec.indexOf(argValues[index - 1]) + argValues[index - 1].length : 0,
+        spec.indexOf(argValue)
+      )
+      .concat(argValue/*.replace(/"/g, '')*/)
+      .trim();
+
+    // text =
 
     return ({
-      text: argValue.replace(/"/g, ''),
-      type,
+      text,
+      type: 'verb',
     });
   });
+
+  return entries;
 
   // console.log('verbs >', verbs);
   // console.log('prep >', prepositions);

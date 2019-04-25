@@ -32,10 +32,20 @@ describe('Generation test cases steps based on Gauge specs', () => {
   });
 
   it('Create a functional test script based on a step', () => {
-    expect(generateStep('Click on "submit" and click "abc"')).toBe(
-`step("Click on <x1>", async (x1) => {
-  await click(x1);
-});`
+    expect(generateStep('Click on "submit" and click "abc"')).toEqual(
+      [
+        {
+          text: 'Click on "submit"',
+          type: 'verb'
+        },
+        {
+          text: 'and click "abc"',
+          type: 'verb'
+        },
+      ]
+// `step("Click on <x1>", async (x1) => {
+//   await click(x1);
+// });`
     );
 
 //     expect(generateStep('Goto "www.google.com" page')).toBe(
