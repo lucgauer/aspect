@@ -1,5 +1,6 @@
 const nlp = require('compromise');
 const taiko = require('taiko');
+const fs = require('fs');
 
 module.exports.getSteps = (specFileContent) => {
   const stepLinePrefix = '* ';
@@ -11,12 +12,12 @@ module.exports.getSteps = (specFileContent) => {
   ;
 };
 
-module.exports.generateCommand = ({ text, type }, nlp /* TODO relate nlp write with textbox */) => {
+module.exports.generateCommand = ({ text, type, mainText }) => {
   let command;
 
   switch (type) {
     case 'verb':
-      command = text;
+      command = mainText;
       break;
 
     case 'preposition':
@@ -30,7 +31,7 @@ module.exports.generateCommand = ({ text, type }, nlp /* TODO relate nlp write w
   };
 };
 
-module.exports.generateStep = (spec) => {
+module.exports.generateEntries = (spec) => {
   const argValues = spec.match(/".+?"/g) || [];
   const analysis = nlp('it '.concat(
     spec.charAt(0).toLowerCase(),
@@ -56,7 +57,9 @@ module.exports.generateStep = (spec) => {
     let text = spec
       .toLowerCase()
       .slice(
-        index ? spec.indexOf(argValues[index - 1]) + argValues[index - 1].length : 0,
+        index
+          ? spec.indexOf(argValues[index - 1]) + argValues[index - 1].length
+          : 0,
         spec.indexOf(argValue)
       )
       .concat(argValue/*.replace(/"/g, '')*/)
@@ -68,33 +71,38 @@ module.exports.generateStep = (spec) => {
       .find(word => [...verbs, ...prepositions].includes(word))
     ;
 
-    return ({ mainText, text, type: 'verb' });
+    return ({
+      mainText,
+      text, type: 'verb',
+      argument: argValue.replace(/"/g, ''),
+    });
   });
 };
 
-module.exports.generateScript = () => {
-  const argsKeys = argValues.map((value, i) => `x${i + 1}`);
-  // const commands = argsKeys.map(argKey => {
-  //   const { command, isAsync } = module.exports.generateCommand(argKey);
-  //
-  //   return `${isAsync ? 'await ' : ''}${command}(${argsKeys})`;
-  // });
+module.exports.generateScript = (entries) => {
+  const argKeys = entries.map((value, i) => `x${i + 1}`);
+  const stepPattern = entries
+    .map(({ text, argument }, i) => text.replace(/".+"/, `<${argKeys[i]}>`))
+    .join(' ')
+  ;
+  const commands = argKeys.map((argKey, i) => {
+    const { command, isAsync } = module.exports.generateCommand(entries[i]);
 
-  // const command = nlp('it '.concat(spec.charAt(0).toLocaleLowerCase(), spec.slice(1)))
-  //   .verbs(0)
-  //   .out('text')
-  //   .trim()
-  // ;
-  // const stepPattern = 'text <arg>';
+    return `${isAsync ? 'await ' : ''}${command}(${argKeys[i]})`;
+  });
 
-  // argsValues.reduce(
-  //   (acc, argValue, index) => acc.replace(argValue, `<x${index + 1}>`),
-  //   spec,
-  // );
+    return (
+`step("${stepPattern}", async (${argKeys.join(', ')}) => {
+  ${commands.join(';\n  ')};
+});`
+    );
+};
 
-  //   return (
-  // `step("${stepPattern}", async (${argsKeys}) => {
-  //   ;
-  // });`
-  //   );
+module.exports.generateFile = (spec, /*file*/) => {
+  const entries = module.exports.generateEntries(spec);
+  const script = module.exports.generateScript(entries);
+
+  console.log(fs.writeFileSync('./output.js', 'a', 'utf8'));
+
+  return 1;
 };

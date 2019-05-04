@@ -1,7 +1,9 @@
 const {
   getSteps,
   generateCommand,
-  generateStep,
+  generateEntries,
+  generateScript,
+  generateFile,
 } = require('./generateStep');
 const fs = require('fs');
 
@@ -21,51 +23,86 @@ describe('Generation test cases steps based on Gauge specs', () => {
   });
 
   it('Create a command based on a text snippet', () => {
-    expect(generateCommand({ type: 'verb', text: 'write' })).toEqual({
-      isAsync: true,
-      command: 'write',
-    });
-    expect(generateCommand({ type: 'preposition', text: 'in' })).toEqual({
-      isAsync: false,
-      command: 'textField',
-    });
+    expect(generateCommand({ type: 'verb', mainText: 'write' }))
+      .toEqual({
+        isAsync: true,
+        command: 'write',
+      });
+
+    expect(generateCommand({ type: 'preposition', mainText: 'in' }))
+      .toEqual({
+        isAsync: false,
+        command: 'textField',
+      });
   });
 
-  it('Create a functional test script based on a step', () => {
-    expect(generateStep('Click on "submit" and click "abc"')).toEqual(
+  it('Split steps into small understandable chunks of steps', () => {
+    expect(generateEntries('Goto "www.google.com" page')).toEqual(
       [
         {
-          text: 'click on "submit"',
-          mainText: 'click',
-          type: 'verb',
-        },
-        {
-          text: 'and click "abc"',
-          mainText: 'click',
+          mainText: 'goto',
+          text: 'goto "www.google.com"',
+          argument: 'www.google.com',
           type: 'verb',
         },
       ],
     );
-
-    expect(generateStep('Goto "www.google.com" page')).toBe(
-`step("Goto <x1> page", async (x1) => {
-  await goto(x1);
-});`
-    );
-
-    expect(generateStep('Click on "Routes"')).toBe(
-`step("Click on <x1>", async (x1) => {
-  await click(x1);
-});`
+    expect(generateEntries('Click on "submit" and click "abc"')).toEqual(
+      [
+        {
+          mainText: 'click',
+          text: 'click on "submit"',
+          argument: 'submit',
+          type: 'verb',
+        },
+        {
+          mainText: 'click',
+          text: 'and click "abc"',
+          argument: 'abc',
+          type: 'verb',
+        },
+      ],
     );
   });
 
-  xit('Create a functional test script based on a composed step', () => {
-    expect(generateStep('Write "Berlin" in "Search"')).toBe(
-`step("Write <x1> in <x2>", async (x1, x2) => {
-  await textBox(x2);
-  await write(x1);
-});`
-    );
-  })
+  it('a functional test script based on a step', () => {
+    expect(generateScript(
+      [
+        {
+          mainText: 'goto',
+          text: 'goto "www.google.com"',
+          argument: 'www.google.com',
+          type: 'verb',
+        },
+      ],
+    )).toBe(
+`step("goto <x1>", async (x1) => {
+  await goto(x1);
+});`);
+
+    expect(generateScript(
+      [
+        {
+          mainText: 'click',
+          text: 'click on "submit"',
+          argument: 'submit',
+          type: 'verb',
+        },
+        {
+          mainText: 'click',
+          text: 'and click "abc"',
+          argument: 'abc',
+          type: 'verb',
+        },
+      ],
+    )).toBe(
+`step("click on <x1> and click <x2>", async (x1, x2) => {
+  await click(x1);
+  await click(x2);
+});`);
+  });
+
+  xit('Create a functional test file', () => {
+    expect(generateFile('click "Berlin" and click "Search"')).toBe(1);
+  });
 });
