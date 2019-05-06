@@ -1,5 +1,5 @@
 const nlp = require('compromise');
-const taiko = require('taiko');
+// const taiko = require('taiko');
 const fs = require('fs');
 
 module.exports.getSteps = (specFileContent) => {
@@ -71,11 +71,12 @@ module.exports.generateEntries = (spec) => {
       .find(word => [...verbs, ...prepositions].includes(word))
     ;
 
-    return ({
+    return {
       mainText,
-      text, type: 'verb',
+      text,
+      type: 'verb',
       argument: argValue.replace(/"/g, ''),
-    });
+    };
   });
 };
 

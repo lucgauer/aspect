@@ -8,7 +8,7 @@ const {
 const fs = require('fs');
 
 describe('Generation test cases steps based on Gauge specs', () => {
-  it('Read gauge specs markdown file', async () => {
+  xit('Read gauge specs markdown file', async () => {
     const specFileContent = await fs.readFileSync(
       './specs/maps-routing-example.spec',
       'utf8',
@@ -22,7 +22,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
     ]);
   });
 
-  it('Create a command based on a text snippet', () => {
+  xit('Create a command based on a text snippet', () => {
     expect(generateCommand({ type: 'verb', mainText: 'write' }))
       .toEqual({
         isAsync: true,
@@ -36,7 +36,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
       });
   });
 
-  it('Split steps into small understandable chunks of steps', () => {
+  xit('Split steps into small understandable chunks of steps', () => {
     expect(generateEntries('Goto "www.google.com" page')).toEqual(
       [
         {
@@ -65,7 +65,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
     );
   });
 
-  it('a functional test script based on a step', () => {
+  xit('a functional test script based on a step', () => {
     expect(generateScript(
       [
         {
