@@ -8,7 +8,7 @@ const {
 const fs = require('fs');
 
 describe('Generation test cases steps based on Gauge specs', () => {
-  xit('Read gauge specs markdown file', async () => {
+  it('Read gauge specs markdown file', async () => {
     const specFileContent = await fs.readFileSync(
       './specs/maps-routing-example.spec',
       'utf8',
@@ -22,7 +22,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
     ]);
   });
 
-  xit('Create a command based on a text snippet', () => {
+  it('Create a command based on a text snippet', () => {
     expect(generateCommand({ type: 'verb', mainText: 'write' }))
       .toEqual({
         isAsync: true,
@@ -36,7 +36,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
       });
   });
 
-  xit('Split steps into small understandable chunks of steps', () => {
+  it('Split steps into small understandable chunks of steps', () => {
     expect(generateEntries('Goto "www.google.com" page')).toEqual(
       [
         {
@@ -65,7 +65,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
     );
   });
 
-  xit('a functional test script based on a step', () => {
+  it('a functional test script based on a step', () => {
     expect(generateScript(
       [
         {
@@ -102,7 +102,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
 });`);
   });
 
-  xit('Create a functional test file', () => {
+  it('Create a functional test file', () => {
     expect(generateFile('click "Berlin" and click "Search"')).toBe(1);
   });
 });

@@ -1,5 +1,5 @@
 const nlp = require('compromise');
-// const taiko = require('taiko');
+const taikoCommands = require('./taikoCommands.json');
 const fs = require('fs');
 
 module.exports.getSteps = (specFileContent) => {
@@ -25,10 +25,9 @@ module.exports.generateCommand = ({ text, type, mainText }) => {
       break;
   }
 
-  return {
-    command,
-    isAsync: taiko[command].constructor.name === 'AsyncFunction',
-  };
+  const { isAsync } = taikoCommands[command];
+
+  return { command, isAsync };
 };
 
 module.exports.generateEntries = (spec) => {
@@ -102,8 +101,6 @@ module.exports.generateScript = (entries) => {
 module.exports.generateFile = (spec, /*file*/) => {
   const entries = module.exports.generateEntries(spec);
   const script = module.exports.generateScript(entries);
-
-  console.log(fs.writeFileSync('./output.js', 'a', 'utf8'));
 
   return 1;
 };

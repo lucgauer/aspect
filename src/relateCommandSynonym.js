@@ -1,8 +1,11 @@
-const types = require('./taiko-command-types.json');
+const commands = require('./taikoCommands.json');
 
-module.exports.getSynonymEntry = (entry) => {
-  const types =  Object
-    .values(types)
-    .reduce((acc, type) => acc.concat(type), [])
+module.exports.getSynonymEntry = ({ text, ...entry }) => {
+  const synonym = Object
+    .entries(commands)
+    .filter(([command, { synonyms }]) => synonyms.includes(text))
+    .map(([command]) => command)[0]
   ;
+
+  return { text: synonym || text, ...entry };
 };

@@ -1,0 +1,250 @@
+{
+  "openBrowser": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "closeBrowser": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "client": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "switchTo": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "intercept": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "setViewPort": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "openTab": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "closeTab": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "goto": {
+    "synonyms": [
+      "access"
+    ],
+    "isAsync": true
+  },
+  "reload": {
+    "synonyms": [
+      "refresh"
+    ],
+    "isAsync": true
+  },
+  "title": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "click": {
+    "synonyms": [
+      "tap"
+    ],
+    "isAsync": true
+  },
+  "doubleClick": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "rightClick": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "dragAndDrop": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "hover": {
+    "synonyms": [
+      "over"
+    ],
+    "isAsync": true
+  },
+  "focus": {
+    "synonyms": [
+      ""
+    ],
+    "isAsync": true
+  },
+  "write": {
+    "synonyms": [
+      "type"
+    ],
+    "isAsync": true
+  },
+  "clear": {
+    "synonyms": [
+      "clean"
+    ],
+    "isAsync": true
+  },
+  "attach": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "press": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "highlight": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "scrollTo": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "scrollRight": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "scrollLeft": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "scrollUp": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "scrollDown": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "screenshot": {
+    "synonyms": [
+      "printscreen"
+    ],
+    "isAsync": true
+  },
+  "image": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "link": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "listItem": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "button": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "inputField": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "fileField": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "textField": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "comboBox": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "checkBox": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "radioButton": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "text": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "contains": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "toLeftOf": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "toRightOf": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "above": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "below": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "near": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "alert": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "prompt": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "confirm": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "beforeunload": {
+    "synonyms": [],
+    "isAsync": true
+  },
+  "evaluate": {
+    "synonyms": [
+      "eval"
+    ],
+    "isAsync": true
+  },
+  "intervalSecs": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "timeoutSecs": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "to": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "into": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "waitFor": {
+    "synonyms": [
+      "sleep"
+    ],
+    "isAsync": false
+  },
+  "accept": {
+    "synonyms": [],
+    "isAsync": false
+  },
+  "dismiss": {
+    "synonyms": [],
+    "isAsync": false
+  }
+}
