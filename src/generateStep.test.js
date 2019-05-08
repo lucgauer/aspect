@@ -102,7 +102,12 @@ describe('Generation test cases steps based on Gauge specs', () => {
 });`);
   });
 
-  it('Create a functional test file', () => {
-    expect(generateFile('click "Berlin" and click "Search"')).toBe(1);
+  it('Create a functional test file', async () => {
+    const specFileContent = await fs.readFileSync(
+      './specs/maps-routing-example.spec',
+      'utf8',
+    );
+
+    expect(generateFile(specFileContent)).toMatchSnapshot();
   });
 });

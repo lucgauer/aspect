@@ -25,9 +25,9 @@ module.exports.generateCommand = ({ text, type, mainText }) => {
       break;
   }
 
-  const { isAsync } = taikoCommands[command];
+  const { isAsync } = taikoCommands[command] || {};
 
-  return { command, isAsync };
+  return { command, isAsync: Boolean(isAsync) };
 };
 
 module.exports.generateEntries = (spec) => {
@@ -41,9 +41,10 @@ module.exports.generateEntries = (spec) => {
     .filter(text => !text.startsWith('"'))
   ;
   const verbs = filterText(analysis.verbs().data());
-  const prepositions = filterText(analysis
-    .out('tags')
-    .filter(({ tags }) => tags.includes('Preposition'))
+  const prepositions = filterText(
+    analysis
+      .out('tags')
+      .filter(({ tags }) => tags.includes('Preposition'))
   );
 
   return argValues.map((argValue, index) => {
@@ -98,9 +99,34 @@ module.exports.generateScript = (entries) => {
     );
 };
 
-module.exports.generateFile = (spec, /*file*/) => {
-  const entries = module.exports.generateEntries(spec);
-  const script = module.exports.generateScript(entries);
+module.exports.generateFile = (fileContent) => `
+/* globals gauge*/
+"use strict";
+const {
+  ${Object.keys(taikoCommands).join(',\n  ')}
+} = require("taiko");
 
-  return 1;
-};
+const assert = require("assert");
+const headless = process.env.headless_chrome.toLowerCase() === "true";
+
+beforeSuite(async () => {
+  await openBrowser({
+    headless,
+    args: ["--lang=en-US"]
+  });
+});
+
+afterSuite(async () => {
+  await closeBrowser();
+});
+  
+${
+  module.exports
+  .getSteps(fileContent)
+  .map(spec => module
+    .exports
+    .generateScript(module.exports.generateEntries(spec))
+  )
+  .join('\n'.repeat(2))
+}
+`;
