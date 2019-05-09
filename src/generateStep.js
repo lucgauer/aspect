@@ -1,6 +1,5 @@
 const nlp = require('compromise');
 const taikoCommands = require('./taikoCommands.json');
-const fs = require('fs');
 
 module.exports.getSteps = (specFileContent) => {
   const stepLinePrefix = '* ';
@@ -122,11 +121,11 @@ afterSuite(async () => {
   
 ${
   module.exports
-  .getSteps(fileContent)
-  .map(spec => module
-    .exports
-    .generateScript(module.exports.generateEntries(spec))
-  )
-  .join('\n'.repeat(2))
+    .getSteps(fileContent)
+    .map(spec => module
+      .exports
+      .generateScript(module.exports.generateEntries(spec))
+    )
+    .join('\n'.repeat(2))
 }
 `;
