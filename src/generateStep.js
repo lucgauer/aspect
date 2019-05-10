@@ -24,7 +24,7 @@ module.exports.generateCommand = ({ text, type, mainText }) => {
       break;
   }
 
-  const { isAsync } = taikoCommands[command] || {};
+  const { isAsync } = taikoCommands[command];// || {};
 
   return { command, isAsync: Boolean(isAsync) };
 };
@@ -104,7 +104,6 @@ module.exports.generateFile = (fileContent) => `
 const {
   ${Object.keys(taikoCommands).join(',\n  ')}
 } = require("taiko");
-
 const assert = require("assert");
 const headless = process.env.headless_chrome.toLowerCase() === "true";
 
