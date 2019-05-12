@@ -7,4 +7,3 @@ Given a user, I want to calculate a route distance between two places, so that I
 * Goto "google maps" page
 * Write "Berlin" in "Search"
 * Click on "Routes"
-* Search for "Munich"

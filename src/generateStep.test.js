@@ -14,12 +14,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
       'utf8',
     );
 
-    expect(getSteps(specFileContent)).toEqual([
-      'Goto "google maps" page',
-      'Write "Berlin" in "Search"',
-      'Click on "Routes"',
-      'Search for "Munich"',
-    ]);
+    expect(getSteps(specFileContent)).toMatchSnapshot();
   });
 
   it('Create a command based on a text snippet', () => {
@@ -63,6 +58,20 @@ describe('Generation test cases steps based on Gauge specs', () => {
         },
       ],
     );
+    expect(generateEntries('Write "Berlin" in "Search"')).toEqual([
+      {
+        mainText: 'write',
+        text: 'write "Berlin"',
+        argument: 'Berlin',
+        type: 'verb',
+      },
+      {
+        argument: 'Search',
+        mainText: 'in',
+        text: 'in \"Search\"',
+        type: 'preposition',
+      },
+    ]);
   });
 
   it('a functional test script based on a step', () => {

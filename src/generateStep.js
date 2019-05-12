@@ -65,15 +65,34 @@ module.exports.generateEntries = (spec) => {
       .trim()
     ;
 
-    const mainText = text
+    const { mainText, type } = text
       .split(' ')
-      .find(word => [...verbs, ...prepositions].includes(word))
+      // Make it RTL
+      .reverse()
+      .reduce(
+        (acc, word) => {
+          if (verbs.includes(word)) {
+            return {
+              mainText: word,
+              type: 'verb',
+            }
+          } else if (prepositions.includes(word)) {
+            return {
+              mainText: word,
+              type: 'preposition',
+            }
+          }
+
+          return acc;
+        },
+        {},
+      )
     ;
 
     return {
       mainText,
       text,
-      type: 'verb',
+      type,
       argument: argValue.replace(/"/g, ''),
     };
   });
@@ -91,11 +110,11 @@ module.exports.generateScript = (entries) => {
     return `${isAsync ? 'await ' : ''}${command}(${argKeys[i]})`;
   });
 
-    return (
+  return (
 `step("${stepPattern}", async (${argKeys.join(', ')}) => {
   ${commands.join(';\n  ')};
 });`
-    );
+  );
 };
 
 module.exports.generateFile = (fileContent) => `
