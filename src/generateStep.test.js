@@ -26,8 +26,8 @@ describe('Generation test cases steps based on Gauge specs', () => {
 
     expect(generateCommand({ type: 'preposition', mainText: 'in' }))
       .toEqual({
-        isAsync: false,
-        command: 'textField',
+        isAsync: true,
+        command: 'focus',
       });
   });
 

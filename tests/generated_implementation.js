@@ -60,7 +60,6 @@ const {
   accept,
   dismiss
 } = require("taiko");
-
 const assert = require("assert");
 const headless = process.env.headless_chrome.toLowerCase() === "true";
 
@@ -81,13 +80,9 @@ step("goto <x1>", async (x1) => {
 
 step("write <x1> in <x2>", async (x1, x2) => {
   await write(x1);
-  in(x2);
+  await focus(x2);
 });
 
 step("click on <x1>", async (x1) => {
   await click(x1);
-});
-
-step("search for <x1>", async (x1) => {
-  search(x1);
 });

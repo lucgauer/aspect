@@ -83,7 +83,7 @@ step(\\"goto <x1>\\", async (x1) => {
 
 step(\\"write <x1> in <x2>\\", async (x1, x2) => {
   await write(x1);
-  textField(x2);
+  await focus(x2);
 });
 
 step(\\"click on <x1>\\", async (x1) => {
@@ -94,7 +94,7 @@ step(\\"click on <x1>\\", async (x1) => {
 
 exports[`Generation test cases steps based on Gauge specs Read gauge specs markdown file 1`] = `
 Array [
-  "Goto \\"google maps\\" page",
+  "Goto \\"google.com/maps\\" page",
   "Write \\"Berlin\\" in \\"Search\\"",
   "Click on \\"Routes\\"",
 ]

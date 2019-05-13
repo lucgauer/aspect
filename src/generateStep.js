@@ -20,7 +20,7 @@ module.exports.generateCommand = ({ text, type, mainText }) => {
       break;
 
     case 'preposition':
-      command = 'textField';
+      command = 'focus';
       break;
   }
 

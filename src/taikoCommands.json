@@ -72,9 +72,7 @@
     "isAsync": true
   },
   "focus": {
-    "synonyms": [
-      ""
-    ],
+    "synonyms": [],
     "isAsync": true
   },
   "write": {
