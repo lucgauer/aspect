@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Generation test cases steps based on Gauge specs Create a functional test file 1`] = `
-"
-/* globals gauge*/
+"/* globals gauge*/
 \\"use strict\\";
 const {
   openBrowser,
@@ -73,29 +72,34 @@ beforeSuite(async () => {
   });
 });
 
-afterSuite(async () => {
-  await closeBrowser();
-});
+// afterSuite(async () => {
+//  await closeBrowser();
+// });
   
 step(\\"goto <x1>\\", async (x1) => {
   await goto(x1);
 });
 
 step(\\"write <x1> in <x2>\\", async (x1, x2) => {
+  await click(x2);
   await write(x1);
-  await focus(x2);
 });
 
-step(\\"click on <x1>\\", async (x1) => {
-  await click(x1);
+step(\\"press <x1>\\", async (x1) => {
+  await press(x1);
+});
+
+step('page contains <content>', async content => {
+  assert.ok(await text(content).exists());
 });
 "
 `;
 
 exports[`Generation test cases steps based on Gauge specs Read gauge specs markdown file 1`] = `
 Array [
-  "Goto \\"google.com/maps\\" page",
-  "Write \\"Berlin\\" in \\"Search\\"",
-  "Click on \\"Routes\\"",
+  "goto \\"https://nossa-dev.firebaseapp.com/login?debug\\"",
+  "write \\"ttt@ttt.com\\" in \\"email\\"",
+  "write \\"ttt@ttt.com\\" in \\"senha\\"",
+  "press \\"Enter\\"",
 ]
 `;

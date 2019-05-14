@@ -27,7 +27,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
     expect(generateCommand({ type: 'preposition', mainText: 'in' }))
       .toEqual({
         isAsync: true,
-        command: 'focus',
+        command: 'click',
       });
   });
 
@@ -72,6 +72,14 @@ describe('Generation test cases steps based on Gauge specs', () => {
         type: 'preposition',
       },
     ]);
+    expect(generateEntries('Press "enter"')).toEqual([
+      {
+        mainText: 'press',
+        text: 'press "enter"',
+        argument: 'enter',
+        type: 'verb',
+      },
+    ]);
   });
 
   it('a functional test script based on a step', () => {
@@ -106,8 +114,8 @@ describe('Generation test cases steps based on Gauge specs', () => {
       ],
     )).toBe(
 `step("click on <x1> and click <x2>", async (x1, x2) => {
-  await click(x1);
   await click(x2);
+  await click(x1);
 });`);
   });
 

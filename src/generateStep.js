@@ -7,6 +7,8 @@ module.exports.getSteps = (specFileContent) => {
   return specFileContent
     .split('\n')
     .filter(i => i.startsWith(stepLinePrefix))
+    // TODO Ignores this hardcoded assert step
+    .filter(i => !i.startsWith('* page contains'))
     .map(i => i.slice(stepLinePrefix.length))
   ;
 };
@@ -20,13 +22,13 @@ module.exports.generateCommand = ({ text, type, mainText }) => {
       break;
 
     case 'preposition':
-      command = 'focus';
+      command = 'click';
       break;
   }
 
-  const { isAsync } = taikoCommands[command];// || {};
+  const { isAsync } = taikoCommands[command];
 
-  return { command, isAsync: Boolean(isAsync) };
+  return { command, isAsync };
 };
 
 module.exports.generateEntries = (spec) => {
@@ -39,21 +41,34 @@ module.exports.generateEntries = (spec) => {
     .map(({ text }) => text.trim().toLowerCase())
     .filter(text => !text.startsWith('"'))
   ;
-  const verbs = filterText(analysis.verbs().data());
   const prepositions = filterText(
     analysis
       .out('tags')
       .filter(({ tags }) => tags.includes('Preposition'))
   );
+  let verbs = filterText(analysis.verbs().data());
+
+  if (!verbs.length && !prepositions.length) {
+    const faultbackVerb = Object.keys(taikoCommands).find(command => filterText(analysis
+        .out()
+        .split(' ')
+        .map(text => ({ text }))
+      ).includes(command),
+    );
+
+    if (faultbackVerb) {
+      verbs = [faultbackVerb];
+    }
+  }
 
   return argValues.map((argValue, index) => {
-    if (spec.match(RegExp(argValue, 'g')).length > 1) {
+    if (spec.indexOf(argValue) !== spec.lastIndexOf(argValue)) {
       // TODO Not considered yet
       throw new Error('repeated argument value');
     }
 
     // Text chunk, since the last argument occurrence
-    let text = spec
+    const text = spec
       .toLowerCase()
       .slice(
         index
@@ -112,13 +127,13 @@ module.exports.generateScript = (entries) => {
 
   return (
 `step("${stepPattern}", async (${argKeys.join(', ')}) => {
-  ${commands.join(';\n  ')};
+  ${commands.reverse().join(';\n  ')};
 });`
   );
 };
 
-module.exports.generateFile = (fileContent) => `
-/* globals gauge*/
+module.exports.generateFile = (fileContent) => (
+`/* globals gauge*/
 "use strict";
 const {
   ${Object.keys(taikoCommands).join(',\n  ')}
@@ -138,12 +153,17 @@ afterSuite(async () => {
 });
   
 ${
-  module.exports
-    .getSteps(fileContent)
-    .map(spec => module
-      .exports
-      .generateScript(module.exports.generateEntries(spec))
-    )
-    .join('\n'.repeat(2))
+  [...new Set(
+    module.exports
+      .getSteps(fileContent)
+      .map(spec => module
+        .exports
+        .generateScript(module.exports.generateEntries(spec))
+      )
+  )].join('\n'.repeat(2))
 }
-`;
+
+step('page contains <content>', async content => {
+  assert.ok(await text(content).exists());
+});
+`);
