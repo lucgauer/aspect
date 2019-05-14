@@ -69,9 +69,9 @@ beforeSuite(async () => {
   });
 });
 
-// afterSuite(async () => {
-//  await closeBrowser();
-// });
+afterSuite(async () => {
+  await closeBrowser();
+});
   
 step("goto <x1>", async (x1) => {
   await goto(x1);

@@ -9,7 +9,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "build": "node src --specFile specs/maps-routing-example.spec",
+    "build": "node src --specFile specs/gzh-auth.spec",
     "start": "gauge run specs/",
     "test": "jest src --watch"
   },

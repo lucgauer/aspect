@@ -1,5 +1,6 @@
 const nlp = require('compromise');
 const taikoCommands = require('./taikoCommands.json');
+const { getSynonymEntry } = require('./relateCommandSynonym');
 
 module.exports.getSteps = (specFileContent) => {
   const stepLinePrefix = '* ';
@@ -13,12 +14,18 @@ module.exports.getSteps = (specFileContent) => {
   ;
 };
 
-module.exports.generateCommand = ({ text, type, mainText }) => {
+module.exports.generateCommand = (entry) => {
   let command;
 
-  switch (type) {
+  switch (entry.type) {
     case 'verb':
-      command = mainText;
+      command = entry.mainText;
+
+      // Try to found a synonym
+      if (!taikoCommands[command]) {
+        command = getSynonymEntry(entry).mainText;
+      }
+
       break;
 
     case 'preposition':

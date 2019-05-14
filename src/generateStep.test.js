@@ -10,7 +10,7 @@ const fs = require('fs');
 describe('Generation test cases steps based on Gauge specs', () => {
   it('Read gauge specs markdown file', async () => {
     const specFileContent = await fs.readFileSync(
-      './specs/maps-routing-example.spec',
+      './specs/gzh-auth.spec',
       'utf8',
     );
 
@@ -121,7 +121,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
 
   it('Create a functional test file', async () => {
     const specFileContent = await fs.readFileSync(
-      './specs/maps-routing-example.spec',
+      './specs/gzh-auth.spec',
       'utf8',
     );
 
