@@ -97,6 +97,10 @@ step(\\"press <x1>\\", async (x1) => {
 step('page contains <content>', async content => {
   assert.ok(await text(content).exists());
 });
+
+step('page not contains <content>', async content => {
+  assert.ok(!await text(content).exists());
+});
 "
 `;
 

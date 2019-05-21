@@ -8,8 +8,9 @@ module.exports.getSteps = (specFileContent) => {
   return specFileContent
     .split('\n')
     .filter(i => i.startsWith(stepLinePrefix))
-    // TODO Ignores this hardcoded assert step
+    // TODO Fix this pre compiled steps
     .filter(i => !i.startsWith('* page contains'))
+    .filter(i => !i.startsWith('* page not contains'))
     .map(i => i.slice(stepLinePrefix.length))
   ;
 };
@@ -178,5 +179,9 @@ ${
 
 step('page contains <content>', async content => {
   assert.ok(await text(content).exists());
+});
+
+step('page not contains <content>', async content => {
+  assert.ok(!await text(content).exists());
 });
 `);
