@@ -36,7 +36,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
       [
         {
           mainText: 'goto',
-          text: 'goto "www.google.com"',
+          text: 'goto "www.google.com" page',
           argument: 'www.google.com',
           type: 'verb',
         },
@@ -58,7 +58,7 @@ describe('Generation test cases steps based on Gauge specs', () => {
         },
       ],
     );
-    expect(generateEntries('Write "Berlin" in "Search"')).toEqual([
+    expect(generateEntries('Write "Berlin" text in "Search"')).toEqual([
       {
         mainText: 'write',
         text: 'write "Berlin"',
@@ -68,7 +68,21 @@ describe('Generation test cases steps based on Gauge specs', () => {
       {
         argument: 'Search',
         mainText: 'in',
-        text: 'in \"Search\"',
+        text: 'text in \"Search\"',
+        type: 'preposition',
+      },
+    ]);
+    expect(generateEntries('Write "Istanbul" in "city" field')).toEqual([
+      {
+        mainText: 'write',
+        text: 'write "Istanbul"',
+        argument: 'Istanbul',
+        type: 'verb',
+      },
+      {
+        argument: 'city',
+        mainText: 'in',
+        text: 'in \"city\" field',
         type: 'preposition',
       },
     ]);

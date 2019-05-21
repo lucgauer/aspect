@@ -75,17 +75,23 @@ module.exports.generateEntries = (spec) => {
     }
 
     // Text chunk, since the last argument occurrence
-    const text = spec
+    let text = spec
       .toLowerCase()
       .slice(
         index
           ? spec.indexOf(argValues[index - 1]) + argValues[index - 1].length
-          : 0,
+          : 0
+        ,
         spec.indexOf(argValue)
       )
       .concat(argValue/*.replace(/"/g, '')*/)
       .trim()
     ;
+
+    // For the last entry it concats the rest of the string
+    if (argValues.length - 1 === index) {
+      text = text.concat(spec.slice(spec.lastIndexOf('"') + 1));
+    }
 
     const { mainText, type } = text
       .split(' ')

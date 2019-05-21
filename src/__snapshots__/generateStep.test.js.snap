@@ -80,6 +80,11 @@ step(\\"goto <x1>\\", async (x1) => {
   await goto(x1);
 });
 
+step(\\"write <x1> in <x2> text\\", async (x1, x2) => {
+  await click(x2);
+  await write(x1);
+});
+
 step(\\"write <x1> in <x2>\\", async (x1, x2) => {
   await click(x2);
   await write(x1);
@@ -97,8 +102,8 @@ step('page contains <content>', async content => {
 
 exports[`Generation test cases steps based on Gauge specs Read gauge specs markdown file 1`] = `
 Array [
-  "goto \\"https://nossa-dev.firebaseapp.com/login?debug\\"",
-  "write \\"ttt@ttt.com\\" in \\"email\\"",
+  "goto \\"https://rbs-nossa-dev.firebaseapp.com/login?debug\\"",
+  "write \\"ttt@ttt.com\\" in \\"email\\" text",
   "write \\"ttt@ttt.com\\" in \\"senha\\"",
   "press \\"Enter\\"",
 ]

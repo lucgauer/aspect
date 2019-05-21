@@ -77,6 +77,11 @@ step("goto <x1>", async (x1) => {
   await goto(x1);
 });
 
+step("write <x1> in <x2> text", async (x1, x2) => {
+  await click(x2);
+  await write(x1);
+});
+
 step("write <x1> in <x2>", async (x1, x2) => {
   await click(x2);
   await write(x1);
@@ -88,4 +93,8 @@ step("press <x1>", async (x1) => {
 
 step('page contains <content>', async content => {
   assert.ok(await text(content).exists());
+});
+
+step('page not contains <content>', async content => {
+  assert.ok(!await text(content).exists());
 });
