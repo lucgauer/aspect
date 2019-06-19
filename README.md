@@ -1,6 +1,8 @@
+# ASPECT
+
 🤖 Test automation by functional specification processing 🖋
 
-## How to install
+## Installation
 
 In order to run the project, follow the steps below: 
 
@@ -12,15 +14,32 @@ In order to run the project, follow the steps below:
 * Download the ZIP of the [last release of this project](https://github.com/lucgauer/aspect/releases/latest);
 * Run `npm install` into your extracted ZIP folder, in order to install all project dependencies.
 
-## How to run
+## Usage
 
-### `npm run build`
+### Writinng Specs
 
-WIP.
+If you want to learn how to write functional specs with Gauge, please take a look at:
+* https://gauge.org/getting-started-guide/create-specification/
 
-### `npm start`
+Or if you want to customize Taiko generated functional tests:
+* https://taiko.gauge.org/#integrating-gauge
 
-WIP.
+### Running automation
+
+The following commands can be executed at the root of this project, after installation.
+
+#### `npm run build`
+
+Interprets and generate your `.spec` files, placed at `./specs/`, in order to generate a `./tests/generated_implementation.js` with the functional tests.
+
+#### `npm start`
+
+Starts Gauge specs processing, reading all `.spec` files placed at `./specs/`.  
+Then relates all steps texts to `./test/generated_implementation.js` and runs Taiko with browser automation.
+
+#### `npm test`
+
+Runs all aspect source code unit testing.
 
 ## Solving problems
 
